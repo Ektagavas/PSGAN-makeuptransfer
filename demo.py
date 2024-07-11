@@ -9,6 +9,7 @@ import numpy as np
 import faceutils as futils
 from psgan import PostProcess
 from setup import setup_config, setup_argparser
+import os
 
 
 def main(save_path='transferred_image.png'):
@@ -22,6 +23,10 @@ def main(save_path='transferred_image.png'):
         "--reference_dir",
         default="assets/images/makeup",
         help="path to reference images")
+    parser.add_argument(
+        "--output_dir",
+        default="/content/output",
+        help="path to output images")
     parser.add_argument(
         "--speed",
         action="store_true",
@@ -58,6 +63,7 @@ def main(save_path='transferred_image.png'):
         source_crop = source.crop(
             (face.left(), face.top(), face.right(), face.bottom()))
         image = postprocess(source_crop, image)
+        save_path = os.path.join(args.output_dir,os.path.basename(reference_path))
         image.save(save_path)
 
         if args.speed:
